@@ -18,6 +18,7 @@ class SelfAttentionLucidrains(nn.Module):
         self.heads = heads
         self.scale = dim_head**-0.5
 
+        self.attend = nn.Softmax(dim=-1)
         self.to_qkv = nn.Linear(dim, inner_dim * 3, bias=False)
 
         self.to_out = nn.Sequential(
@@ -29,15 +30,15 @@ class SelfAttentionLucidrains(nn.Module):
         q, k, v = map(
             lambda t: rearrange(t, 'b n (h d) -> b h n d', h=self.heads), qkv)
         # q, k = shape (B, Head Number, P, dim_head) = (1, 1, 256, 64)
-        # qとkの行列積
-        # ???
-        attn = _
+        # qとkの行列積 (ANSWER)
+        dots = torch.matmul(q, k.transpose(-1, -2)) * self.scale
+        attn = self.attend(dots)
 
-        # attentionとvの行列積
+        # attentionとvの行列積 (ANSWER)
         # attn = shape (B, Head Number, P, P) = (1, 1, 256, 256)
         # v = shape (B, Head Number, P, dim_head) = (1, 1, 256, 64)
-        # ???
-        out = _
+        out = torch.matmul(attn, v)
+        out = rearrange(out, 'b h n d -> b n (h d)')
         return self.to_out(out)
 
 
@@ -68,13 +69,15 @@ class SelfAttentionTimm(nn.Module):
         q, k, v = qkv.unbind(
             0)  # make torchscript happy (cannot use tensor as tuple)
 
-        # qとkの行列積
-        attn = _  # ???
+        # qとkの行列積 (ANSWER)
+        attn = (q @ k.transpose(-2, -1)) * self.scale
+        attn = attn.softmax(dim=-1)
+        attn = self.attn_drop(attn)
 
-        # attentionとvの行列積
+        # attentionとvの行列積 (ANSWER)
         # attn = shape (B, Head Number, P, P) = (1, 1, 256, 256)
         # v = shape (B, Head Number, P, dim_head) = (1, 1, 256, 64)
-        x = _  # ???
+        x = (attn @ v).transpose(1, 2).reshape(B, N, C)
         x = self.proj(x)
         x = self.proj_drop(x)
         return x
