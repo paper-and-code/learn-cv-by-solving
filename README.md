@@ -4,7 +4,7 @@
 
 ## Table Contents 
 
-| Date       | Title                        | Google Colaboratory                                                                                                                                                 | Connpass                                                    |
+| Date       | Title                        | Colaboratory                                                                                                                                                        | Connpass                                                    |
 | ---------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
 | 2022/04/11 | (1) Visual Attention Network | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1L5UeV_StRK9YnDetClmpWQVErlBxcUg5?usp=sharing) | [243345](https://paper-and-code.connpass.com/event/243345/) |
 | 2022/05/09 | (2) VQ-VAE                   | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1js6t19QJnJvDNrTms3TuaTZKTw7-WjnD?usp=sharing) | [245127](https://paper-and-code.connpass.com/event/245127/) |
